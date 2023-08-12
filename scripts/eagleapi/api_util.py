@@ -8,11 +8,13 @@ def get_url_port(server_url_port=""):
     if not server_url_port or server_url_port == "":
         return None, None
     o = urlparse(server_url_port)
-    _url = f"http://{o.hostname}"
-    if o.hostname != "localhost":
+    _url = f"{o.scheme}://{o.hostname}"
+    try:
         _ip = ipaddress.ip_address(o.hostname)
         if _ip.version == 6:
-            _url = f"http://[{o.hostname}]"
+            _url = f"{o.scheme}://[{o.hostname}]"
+    except:
+        pass
     port = o.port
     return _url, port
 
